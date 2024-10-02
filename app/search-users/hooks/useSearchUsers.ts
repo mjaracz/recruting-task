@@ -32,7 +32,6 @@ export const useSearchUsers = () => {
   });
 
   useEffect(() => {
-    console.log(error);
     if (error) setIsErrorOpen(true);
   }, [error]);
 
