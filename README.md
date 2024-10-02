@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## File Naming Convention
+
+Note that the file naming convention is split between files in the hooks path, and all other react component files localized in the app path. Function files located in the `**/hooks/**` path follow camel case conventions. All other files in the `./app/**` path including react component files follow the kebab convention, the default for the react framework NextJS.
+
+For more information on file naming conventions, I invite you to the `.eslintrc.json` configuration file located in rootDir.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

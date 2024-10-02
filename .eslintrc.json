@@ -1,3 +1,22 @@
 {
+  "plugins": ["validate-filename"],
+  "rules": {
+    "validate-filename/naming-rules": [
+      "warn",
+      {
+        "rules": [
+          {
+            "case": "kebab",
+            "target": "./app/**"
+          },
+          {
+            "case": "camel",
+            "target": "**/hooks/**",
+            "patterns": "^use"
+          }
+        ]
+      }
+    ]
+  },
   "extends": ["next/core-web-vitals", "next/typescript"]
 }

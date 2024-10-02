@@ -1,31 +1,24 @@
 "use client";
 
-import { ChangeEvent, useCallback, useState, useEffect } from "react";
 import { ListItem } from "@/components/list-item";
 import { TextField } from "@/components/text-field";
 import { Title } from "@/components/title";
-import { useUsersServices } from "@/services/useUsersService";
 import { CircularProgress, List } from "@mui/material";
+import { default as MaterialListItem } from "@mui/material/ListItem";
 import { Snackbar } from "@/components/snackbar";
+import { useSearchUsers } from "./hooks/useSearchUsers";
 
 export const SearchUsers = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [isErrorOpen, setIsErrorOpen] = useState<boolean>(false);
-  const { data, isLoading, refetch, error } = useUsersServices(searchValue);
+  const {
+    onChangeSearch,
+    isLoading,
+    users,
+    error,
+    sentryRef,
+    hasNextPage,
+    isErrorOpen,
+  } = useSearchUsers();
 
-  useEffect(() => {
-    if (error) {
-      setIsErrorOpen(true);
-    }
-  }, [error]);
-
-  const onChangeSearch = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.currentTarget.value);
-      if (searchValue) refetch();
-    },
-    [searchValue, refetch],
-  );
   return (
     <>
       <Title label="Search Github Users" />
@@ -33,7 +26,7 @@ export const SearchUsers = () => {
 
       <div>
         {isLoading && <CircularProgress size={80} />}
-        {!isLoading && !!data?.length && !error && (
+        {!!users.length && !error && (
           <List
             sx={{
               display: "flex",
@@ -47,9 +40,22 @@ export const SearchUsers = () => {
               marginTop: 5,
             }}
           >
-            {data.map((user) => (
-              <ListItem key={user.username} {...user} />
+            {users.map((user, index) => (
+              <ListItem key={`${user.username}_${index}`} {...user} />
             ))}
+            {(isLoading || hasNextPage) && (
+              <MaterialListItem
+                ref={sentryRef}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <CircularProgress size={80} />
+              </MaterialListItem>
+            )}
           </List>
         )}
         <Snackbar
